@@ -5,13 +5,16 @@ import static org.elasticsearch.node.NodeBuilder.nodeBuilder;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.node.Node;
 
-public class RunElasticSearch {
+public class ElasticSearchJava {
 	
 	public static void main(String[] args) throws Exception {
 		Node node = nodeBuilder().local(true).node();
+		// wait for startup and recovery to complete
+		Thread.sleep(1000);
+		Client client = node.client();
 		
-		System.out.println("[Press any key to quit]");
-		System.in.read();
+		// TODO: write your code here
+		
 		node.close();
 	}
 }
