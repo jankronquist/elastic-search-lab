@@ -104,6 +104,12 @@
 			<plugin>
 				<groupId>com.jayway.maven.plugins.lab</groupId>
 				<artifactId>maven-lab-plugin</artifactId>
+				<configuration>
+					<includes>
+						<include>src/**/*</include>
+						<include>HINTS.md</include>
+					</includes>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
