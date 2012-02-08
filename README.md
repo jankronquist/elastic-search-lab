@@ -86,8 +86,8 @@ Open the class ElasticSearchJava.
 
 Lets get some data:
 
-	GetResponse response = client.prepareGet("twitter", "tweet", "1").execute().actionGet();
-	System.out.println(response);
+	GetResponse gr = client.prepareGet("twitter", "tweet", "1").execute().actionGet();
+	System.out.println(gr);
 
 Investigate the GetResponse class. 
 
@@ -100,7 +100,7 @@ Lets add data:
 
 	import static org.elasticsearch.common.xcontent.XContentFactory.*;
 	
-	IndexResponse response = client.prepareIndex("twitter", "tweet", "3")
+	IndexResponse ir = client.prepareIndex("twitter", "tweet", "3")
         .setSource(jsonBuilder()
                     .startObject()
                         .field("user", "kimchy")
@@ -113,4 +113,51 @@ Lets add data:
 
 Verify that the data was added!
 
+Finally lets query the data:
 
+	import static org.elasticsearch.index.query.FilterBuilders.*;
+	import static org.elasticsearch.index.query.QueryBuilders.*;
+	
+	SearchResponse sr = client.prepareSearch("test")
+        .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+        .setQuery(termQuery("multi", "test"))
+        .setFrom(0).setSize(60).setExplain(true)
+        .execute()
+        .actionGet();
+	
+	for (SearchHit hit : sr.getHits()) {
+		System.out.println(hit.getId() + ": " + hit.getSource());
+	}
+
+Exercises:
+
+* Add your own data
+* Test a fuzzy query (QueryBuilders.fuzzyQuery)
+* Test querying between two dates
+* Test boolean queries (eg two conditions)
+
+Step 4 - Documents in Java
+--------------------------
+
+To add a file you need to Base64 encode it first. Elastic Search has a nice utility class for this:
+
+	import org.elasticsearch.common.Base64;
+	
+
+All you need to do is build an object that contains:
+
+	{ "file": "<base64 encoded data>"}
+
+After you have added the document make sure you can query for the object contents.
+
+Step 5 - Result highlighting
+----------------------------
+
+To get search result where you can see what has matched the query you can use highlighting. Simply add `.addHighlightedField("<field>")` and then for each SearchHit you get highlighted results:
+	
+	for (HighlightField field : hit.getHighlightFields().values()) {
+		System.out.println(" " + Arrays.asList(field.fragments()));
+	}
+
+Step 6 - Google Docs
+--------------------
