@@ -200,8 +200,6 @@ Step 7 - List documents
 	
 Open the file `GoogleDocsLab.java`.
 
-The following is taken from <http://code.google.com/apis/documents/docs/2.0/developers_guide_java.html#ListDocs> but with a small fix in the URL.
-
 First of all we must create the OAuth parameters based on the AccessToken we saved earlier:
 
 	GoogleOAuthParameters oauthParameters = new GoogleOAuthParameters();
