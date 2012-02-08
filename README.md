@@ -10,6 +10,7 @@ Get started
 To get Elastic Search up and running:
 
 	git clone https://github.com/jankronquist/elastic-search-lab.git
+	mvn lab:init
 	mvn package
 	mvn exec:java -Dexec.mainClass="com.jayway.search.RunElasticSearch"
 
@@ -19,6 +20,8 @@ Import the code into your favorite IDE. You can of course run the class RunElast
 Since Elastic Search provide automatic clustering functionality make sure to only run a single Elastic Search process at a time! 
 
 **Do not install and run Elastic Search as the default settings will create a cluster across the local network!**  
+
+Notice that some steps require that you use `mvn lab:next` to initiate the next step. Solutions are available in the file ending in *Solution.java. Hints are available in HINTS.md.
 
 Step 1 - Hello Elastic Search
 -----------------------------
@@ -80,9 +83,11 @@ This project and RunElasticSearch already has the mapper-attachments plugin inst
 Step 3 - Java API
 -----------------
 
+	mvn lab:next
+
 Shut down the RunElasticSearch process. Notice the folder `data`. All documents we have inserted will be available when we start a new Elastic Search node.
 
-Open the class ElasticSearchJava.
+Open `ElasticSearchLab.java`.
 
 Lets get some data:
 
@@ -139,6 +144,8 @@ Exercises:
 Step 4 - Documents in Java
 --------------------------
 
+	mvn lab:next
+
 To add a file you need to Base64 encode it first. Elastic Search has a nice utility class for this:
 
 	import org.elasticsearch.common.Base64;
@@ -153,11 +160,95 @@ After you have added the document make sure you can query for the object content
 Step 5 - Result highlighting
 ----------------------------
 
+	mvn lab:next
+
 To get search result where you can see what has matched the query you can use highlighting. Simply add `.addHighlightedField("<field>")` and then for each SearchHit you get highlighted results:
 	
 	for (HighlightField field : hit.getHighlightFields().values()) {
 		System.out.println(" " + Arrays.asList(field.fragments()));
 	}
 
-Step 6 - Google Docs
---------------------
+Step 6 - Google Docs Intro
+--------------------------
+
+All Google API:s are based on OAuth. According to <http://en.wikipedia.org/wiki/OAuth>:
+
+> OAuth (Open Authorization) is an open standard for authorization. It allows users to share their private resources (e.g. photos, videos, contact lists) stored on one site with another site without having to hand out their credentials, typically username and password.
+> 
+> OAuth allows users to hand out tokens instead of credentials to their data hosted by a given service provider. Each token grants access to a specific site (e.g., a video editing site) for specific resources (e.g., just videos from a specific album) and for a defined duration (e.g., the next 2 hours). This allows a user to grant a third party site access to their information stored with another service provider, without sharing their access permissions or the full extent of their data.
+
+In this lab we will access YOUR personal Google Docs. To do this you must first create an Access Token that can be used to access your account. Usually this is done with a website that has been registered with Google, but to simplify things this lab contains a utility to create an access token from command line. The access token will be restricted to Google Docs.
+
+Simply run and follow the instructions:
+
+	mvn compile exec:java -Dexec.mainClass="com.jayway.gdocs.GetAccessToken"
+
+The access token have been stored in a file called `accessToken.properties`. (Feel free to study the program GetAccessToken find out what is going on.)
+
+All Google API:s are based on Google Data Protocol which is a REST-inspired technology for reading, writing, and modifying information on the web. For detals refer to <http://code.google.com/apis/gdata/>.
+
+The documentation for Google Docs API is available here: 
+
+* REST API <http://code.google.com/apis/documents/docs/3.0/developers_guide_protocol.html>
+* Java API <http://code.google.com/apis/documents/docs/2.0/developers_guide_java.html>
+
+
+Step 7 - List documents
+-----------------------
+
+	mvn lab:next
+	
+Open the file `GoogleDocsLab.java`.
+
+The following is taken from <http://code.google.com/apis/documents/docs/2.0/developers_guide_java.html#ListDocs> but with a small fix in the URL.
+
+First of all we must create the OAuth parameters based on the AccessToken we saved earlier:
+
+	GoogleOAuthParameters oauthParameters = new GoogleOAuthParameters();
+	oauthParameters.setOAuthConsumerKey(CONSUMER_KEY);
+	oauthParameters.setOAuthConsumerSecret(CONSUMER_SECRET);
+	AccessToken.load("accessToken.properties").prepare(oauthParameters);
+
+Then we create a client for the Google Docs API:
+
+	DocsService client = new DocsService("lab-client");
+	client.setOAuthCredentials(oauthParameters, new OAuthHmacSha1Signer());
+
+Then we get a list of all documents:
+
+	URL feedUri = new URL("https://docs.google.com/feeds/default/private/full/");
+	DocumentListFeed feed = client.getFeed(feedUri, DocumentListFeed.class);
+	
+	for (DocumentListEntry entry : feed.getEntries()) {
+		// TODO: print document
+	}
+
+Exercise: Print document title, id, link, author and the person that modified it last.
+
+Step 8 - Download document
+--------------------------
+
+	mvn lab:next
+
+Downloading a document is a bit weird and the reason is that the OAuth token must also be included when downloading.
+
+	// get download URI
+	String uri = ((com.google.gdata.data.MediaContent)entry.getContent()).getUri();
+
+	// download
+	MediaContent mc = new MediaContent();
+	mc.setUri(url + "&exportFormat=" + exportFormat);
+	MediaSource ms = client.getMedia(mc);
+	IOUtils.copy(ms.getInputStream(), new FileOutputStream(fileName));
+
+`exportFormat` have to be set to doc, pdf, xls etc. See here for details: <http://code.google.com/apis/documents/docs/3.0/reference.html#ExportParameters>
+
+Exercise: Use this to download all your documents
+
+Step 9 - Integration time
+-------------------------
+
+	mvn lab:next
+
+Instead of just downloading the documents add the to an Elastic Search index. Verify that you can query for the contents.
+

@@ -5,7 +5,7 @@ import static org.elasticsearch.node.NodeBuilder.nodeBuilder;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.node.Node;
 
-public class ElasticSearchJava {
+public class ElasticSearchLab {
 	
 	public static void main(String[] args) throws Exception {
 		Node node = nodeBuilder().local(true).node();
