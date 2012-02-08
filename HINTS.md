@@ -1,3 +1,5 @@
+This file contains hints for some of the steps. The current hint is:
+
 // @BEGIN_VERSION es-java-api
 Have a look at:
 

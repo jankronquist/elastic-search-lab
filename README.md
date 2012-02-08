@@ -21,7 +21,7 @@ Since Elastic Search provide automatic clustering functionality make sure to onl
 
 **Do not install and run Elastic Search as the default settings will create a cluster across the local network!**  
 
-Notice that some steps require that you use `mvn lab:next` to initiate the next step. Solutions are available in the file ending in *Solution.java. Hints are available in HINTS.md.
+Notice that each stes require that you use `mvn lab:next` to initiate the next step. Solutions are available in the file ending in *Solution.java. Hints are sometimes available in HINTS.md.
 
 Step 1 - Hello Elastic Search
 -----------------------------
@@ -83,8 +83,6 @@ This project and RunElasticSearch already has the mapper-attachments plugin inst
 Step 3 - Java API
 -----------------
 
-	mvn lab:next
-
 Shut down the RunElasticSearch process. Notice the folder `data`. All documents we have inserted will be available when we start a new Elastic Search node.
 
 Open `ElasticSearchLab.java`.
@@ -144,8 +142,6 @@ Exercises:
 Step 4 - Documents in Java
 --------------------------
 
-	mvn lab:next
-
 To add a file you need to Base64 encode it first. Elastic Search has a nice utility class for this:
 
 	import org.elasticsearch.common.Base64;
@@ -159,8 +155,6 @@ After you have added the document make sure you can query for the object content
 
 Step 5 - Result highlighting
 ----------------------------
-
-	mvn lab:next
 
 To get search result where you can see what has matched the query you can use highlighting. Simply add `.addHighlightedField("<field>")` and then for each SearchHit you get highlighted results:
 	
@@ -196,8 +190,6 @@ The documentation for Google Docs API is available here:
 Step 7 - List documents
 -----------------------
 
-	mvn lab:next
-	
 Open the file `GoogleDocsLab.java`.
 
 First of all we must create the OAuth parameters based on the AccessToken we saved earlier:
@@ -226,8 +218,6 @@ Exercise: Print document title, id, link, author and the person that modified it
 Step 8 - Download document
 --------------------------
 
-	mvn lab:next
-
 Downloading a document is a bit weird and the reason is that the OAuth token must also be included when downloading.
 
 	// get download URI
@@ -245,8 +235,6 @@ Exercise: Use this to download all your documents
 
 Step 9 - Integration time
 -------------------------
-
-	mvn lab:next
 
 Instead of just downloading the documents add the to an Elastic Search index. Verify that you can query for the contents.
 
