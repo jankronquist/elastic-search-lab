@@ -246,3 +246,12 @@ Step 9 - Integration time
 
 Instead of just downloading the documents add the to an Elastic Search index. Verify that you can query for the contents.
 
+More things to do
+-----------------
+
+Some suggestions:
+
+* Index all files on your harddrive
+* Index all documents in a MongoDB database
+* Watch an interesting presentation about Elastic Search <http://vimeo.com/26710663>
+* Test replication & sharding
