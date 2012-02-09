@@ -10,7 +10,7 @@ public class ElasticSearchLab {
 	public static void main(String[] args) throws Exception {
 		Node node = nodeBuilder().local(true).node();
 		// wait for startup and recovery to complete
-		Thread.sleep(1000);
+		Thread.sleep(3000);
 		Client client = node.client();
 		
 		// TODO: write your code here

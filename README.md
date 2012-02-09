@@ -25,7 +25,7 @@ Notice that each stes require that you use `mvn lab:next` to initiate the step! 
 
 	mvn lab:next
 	
-Then you can begin step 1 below. In the maven output you can see which is the current step.
+Then you can begin step 1 below. In the maven output you can see which is the current step. *Make sure you complete each step before moving on as the steps depend on each other!*
 
 Step 1 - Hello Elastic Search
 -----------------------------
@@ -34,17 +34,17 @@ Lets try some of the examples from the Elastic Search home page.
 
 Inserting data:
 
-	$ curl -XPUT http://localhost:9200/twitter/user/kimchy -d '{
+	curl -XPUT http://localhost:9200/twitter/user/kimchy -d '{
     	"name" : "Shay Banon"
 	}'
 	
-	$ curl -XPUT http://localhost:9200/twitter/tweet/1 -d '{
+	curl -XPUT http://localhost:9200/twitter/tweet/1 -d '{
     	"user": "kimchy",
     	"post_date": "2009-11-15T13:12:00",
     	"message": "Trying out elasticsearch, so far so good?"
 	}'
 	
-	$ curl -XPUT http://localhost:9200/twitter/tweet/2 -d '{
+	curl -XPUT http://localhost:9200/twitter/tweet/2 -d '{
     	"user": "kimchy",
     	"post_date": "2009-11-15T14:12:12",
     	"message": "You know, for Search"
@@ -52,19 +52,19 @@ Inserting data:
 
 Getting data:
 
-	$ curl -XGET http://localhost:9200/twitter/tweet/2
+	curl -XGET http://localhost:9200/twitter/tweet/2
 
 Searching:
 
-	$ curl -XGET http://localhost:9200/twitter/tweet/_search?q=user:kimchy
+	curl -XGET http://localhost:9200/twitter/tweet/_search?q=user:kimchy
 	
-	$ curl -XGET http://localhost:9200/twitter/tweet/_search -d '{
+	curl -XGET http://localhost:9200/twitter/tweet/_search -d '{
 	    "query" : {
 	        "term" : { "user": "kimchy" }
 	    }
 	}'
 	
-	$ curl -XGET http://localhost:9200/twitter/_search?pretty=true -d '{
+	curl -XGET http://localhost:9200/twitter/_search?pretty=true -d '{
 	    "query" : {
 	        "range" : {
 	            "post_date" : {
@@ -84,10 +84,14 @@ This project and RunElasticSearch already has the mapper-attachments plugin inst
 
 <http://www.elasticsearch.org/tutorials/2011/07/18/attachment-type-in-action.html>
 
+**Make sure you successfully perform this step, otherwise the steps below will not work!**
+
 Step 3 - Java API
 -----------------
 
-Shut down the RunElasticSearch process. Notice the folder `data`. All documents we have inserted will be available when we start a new Elastic Search node.
+**Shut down the RunElasticSearch process.** 
+
+Notice the folder `data`. All documents we have inserted will be available when we start a new Elastic Search node.
 
 Open `ElasticSearchLab.java`.
 
