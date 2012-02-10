@@ -129,9 +129,9 @@ Finally lets query the data:
 	import static org.elasticsearch.index.query.FilterBuilders.*;
 	import static org.elasticsearch.index.query.QueryBuilders.*;
 	
-	SearchResponse sr = client.prepareSearch("test")
+	SearchResponse sr = client.prepareSearch("twitter")
         .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-        .setQuery(termQuery("multi", "test"))
+        .setQuery(termQuery("user", "kimchy"))
         .setFrom(0).setSize(60).setExplain(true)
         .execute()
         .actionGet();
