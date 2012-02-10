@@ -22,7 +22,7 @@ Since Elastic Search provide automatic clustering functionality make sure to onl
 
 **Do not install and run Elastic Search as the default settings will create a cluster across the local network!**  
 
-Notice that each stes require that you use `mvn lab:next` to initiate the step! Solutions are available in the file ending in *Solution.java. Hints are sometimes available in HINTS.md. This means now is the time to run:
+Notice that each step requires you to use `mvn lab:next` to initiate the step! Solutions are available in the file ending in *Solution.java. Hints are sometimes available in HINTS.md. This means now is the time to run:
 
 	mvn lab:next
 	
