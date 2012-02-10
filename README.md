@@ -10,6 +10,7 @@ Get started
 To get Elastic Search up and running:
 
 	git clone https://github.com/jankronquist/elastic-search-lab.git
+	cd elastic-search-lab
 	mvn lab:init
 	mvn package
 	mvn exec:java -Dexec.mainClass="com.jayway.search.RunElasticSearch"
